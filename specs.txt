@@ -1,0 +1,62 @@
+Goals of Manga Updater
+1) runs on start up of computer 
+2) when series have been updated a window will pop up from the tool bar to let consumer how many series have been updated
+3) when consumer expands the pop they can see which series have been updated and which chapter it is and which source
+4) easily allows users to add manga to their list from reading on websites like mangahere etc. should ideally work with all browsers 
+5) easily allows users to edit their lists and settings(can do this by making it a windows tool bar)
+6) learns users prefrences to try to recommend them new manga (neural network maybe?)
+7) when a manga has updated loads the chapter in the default browser (this is a setting that can be changed but it is not the default)
+
+
+Model:
+Webscraper
+neural network
+file that stores users mangas and what chapter they are on
+sources file that details the websites we are pulling manga from
+
+View:
+UI windows popup
+
+Controler:
+-access manga bookmark file
+-calls webscraper to test whether mangas are updated or not
+-pushes results out to view
+-when user interacts with the view does other stuff
+
+
+MVP
+
+Model:
+
+manga_checker
+-hasa list of sources, list of mangas, list of updated mangas
+
+webscraper
+-hasa: scrape source/goal object
+
+View:
+
+toolbar button
+-onClick: main menu pops up
+
+main menu
+-onClick of sources: brings up source file interface
+-onClick of mangas reading: brings up manga list interface
+-onClick of settings: brings up settings interface
+
+source file interface
+for MVP this will just be notepad text file
+
+manga list interface
+again for MVP this will just be notepad text file
+
+settings interface
+nothing
+
+results window
+-onClick of manga name: sends user to the updated chapter using the default browser
+-onClick of details arrow: shows details of which chapter is the new one and from which site
+
+
+
+

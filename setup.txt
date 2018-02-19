@@ -1,0 +1,17 @@
+Project Set up 
+
+1) install latest version of python
+2) create virtual environment: python -m venv <DIR>\This_project\env
+3) activate virtual environment:
+   Windows: For cmd: <DIR>\This_project\env\Scripts\activate.bat 
+            for powershell: <DIR>\This_project\env\Scripts\Activate.ps1
+   Linux/Mac: source <DIR>/This_project/env/bin/activate
+4) install dependencies: pip install -r requirements.txt
+5) good to code!!
+6) when you are done coding run deactivate to deactivate the virtual environment
+
+Other useful pip commands:
+pip list: lists packages installed
+pip show <package>: gives details on <package>
+pip install <packag>: installs <package>
+pip freeze > requirements.txt: updates requirements.txt with current package dependencies
