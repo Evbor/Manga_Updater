@@ -3,9 +3,10 @@ import functools
 from bs4 import BeautifulSoup
 
 class Target:
-	def __init__(self, source = None, proto = None, script = None):
+	def __init__(self, source = None, proto = None, com = None, script = None):
 		self.address = source
 		self.protocol = proto
+		self.command = com
 		self.strip_data = script
 
 class Webscraper:
@@ -21,23 +22,26 @@ class Webscraper:
 			self.__targets.extend(Momo)
 		else:
 			raise ValueError("arguement of add_targets is not a list of Targets or Target type")
-	
-	def remove_targets(self, Momo):
-	
+		
 	def scrape(self):
+		results = []
 		for tar in self.__targets:
 			if (tar.protocol == "HTTP"):
-				scrape_HTTP(tar)
+				result = self.scrape_HTTP(tar)
+				results.append(result)
 			else:
 				print("targets protocol is not supported")
-
+		return results
+			
 	@staticmethod
 	def scrape_HTTP(target):
-		response = requests.get(address)
-		soup = BeautifulSoup(response.text)
-		print(soup.prettify())
-			
-			
+		result = None
+		if (target.command == "GET"):
+			response = requests.get(target.address)
+			result = target.strip_data(response)
+		else:
+			print("Command not supported by HTTP protocol/still working on adding other commands")
+		return result
 			
 			
 #human method for checking chapter updates
