@@ -31,8 +31,11 @@ Model:
 manga_checker
 -hasa list of sources, list of mangas, list of updated mangas
 
-webscraper
--hasa: scrape source/goal object
+Webscraper
+-hasa: list of Targets
+
+Target
+-hasa: address, protocol, command, strip_data() 
 
 View:
 
@@ -52,6 +55,11 @@ again for MVP this will just be notepad text file
 
 settings interface
 nothing
+
+Controler:
+
+manga_updater.py
+does shit
 
 results window
 -onClick of manga name: sends user to the updated chapter using the default browser

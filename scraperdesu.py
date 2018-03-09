@@ -1,9 +1,8 @@
 import requests
 import functools
-from bs4 import BeautifulSoup
 
 class Target:
-	def __init__(self, source = None, proto = None, com = None, script = None):
+	def __init__(self, source = None, proto = None, com = None, script = None): #source = string, proto = string, com = string, script = function
 		self.address = source
 		self.protocol = proto
 		self.command = com
