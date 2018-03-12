@@ -13,12 +13,13 @@ chptrs = {"mangakakalot": "Chapter 45", "mangahere": "Made in Abyss 45"}
 madeinabyss = Manga("Made in Abyss", MiAsrcs, chptrs)
 manga_list = {madeinabyss.name: madeinabyss}
 
+
 def function_generator(chapter):
 	def isUpdated(response):
 		raw_html = response.text
 		soup = BeautifulSoup(raw_html)
-		print(soup.prettify())
-		return 0
+		prev_chapter = #reduce chapter
+		chapter_list = soup.find("a", string=prev_chapter)
 	return isUpdated
 
 for manga in manga_list.values():
