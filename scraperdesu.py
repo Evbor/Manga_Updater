@@ -1,13 +1,14 @@
 import requests
 import functools
 
+#Target object definition, has attributes: source(string), protocol(string), command(string), strip_data(function)
 class Target:
-	def __init__(self, source = None, proto = None, com = None, script = None): #source = string, proto = string, com = string, script = function
+	def __init__(self, source = None, proto = None, com = None, script = None):
 		self.address = source
 		self.protocol = proto
 		self.command = com
 		self.strip_data = script
-
+#Webscraper object definition
 class Webscraper:
 	def __init__(self, list_of_targets = []):
 		if not (isinstance(list_of_targets, list) and functools.reduce(lambda A, B: A and isinstance(B, Target), list_of_targets, True)):
@@ -43,10 +44,4 @@ class Webscraper:
 		return result
 			
 			
-#human method for checking chapter updates
-#find area where all other chapters are 
-#look for updated chapter
-#ex: looking for whether rezero 17 is out
-#find tag that contains the rezero 16 link 
-#go up to parent tag
-#look for rezero 17
+

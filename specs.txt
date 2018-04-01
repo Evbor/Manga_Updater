@@ -68,3 +68,12 @@ results window
 
 
 
+notes on manga_updater.py:
+Problem: find chapter number from chapter numbers name
+*Number is not always at the end of the name
+*The chapter names do not always use the same words ie the number does not always come after the word Chapter cause the word chapter is not guranteed
+idea: train neural net to identify the parts of the sentences are identifiable as chapter and the parts that are identifiable as the chapter number???
+
+
+
+

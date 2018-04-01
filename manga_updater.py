@@ -1,5 +1,8 @@
 from scraperdesu import *
 from bs4 import BeautifulSoup
+import regex
+
+chapter_synonyms = ["chapter", "Ch\\."]
 
 class Manga: 
 	def __init__(self, namae = None, jouhougen = None, honshou = None): #name = string, sources = {source: url} e.g. {"mangakalot": "http://mangakakalot.com/search/made_in_abyss"}, current_chapter = number
@@ -14,20 +17,40 @@ madeinabyss = Manga("Made in Abyss", MiAsrcs, chptrs)
 manga_list = {madeinabyss.name: madeinabyss}
 
 
-def function_generator(chapter):
-	def isUpdated(response):
-		raw_html = response.text
-		soup = BeautifulSoup(raw_html)
-		prev_chapter = #reduce chapter
-		chapter_list = soup.find("a", string=prev_chapter)
-	return isUpdated
+
+    
+#generates the functions that Webscraper runs on each of the response objects it gets from its sources
+def function_generator(chapter, m_name):
+    #takes a manga chapter name and returns the chapter number as a float
+    def chapter_num(chapter_name):
+        cnum_signals = chapter_synonyms
+        cnum_signals.insert(0, m_name)
+        for cnum_signal in cnum_signals:
+            re_string = "(?<=" + cnum_signal + "[\\w]+ )\\d+|(?<=" + cnum_signal + " )\d+"
+            pattern = regex.compile(re_string, regex.IGNORECASE)
+            if pattern.search(chapter_name):
+                num = int(pattern.search(chapter_name).group())
+                return num
+        raise Exception("could not find the chapter number")
+    #function generator will return modified versions of this script which takes a requests response object
+    def isUpdated(response):
+        raw_html = response.text
+        soup = BeautifulSoup(raw_html, "html.parser")
+        current_chapter_tag = soup.find(string=regex.compile(chapter + "|\\s" + chapter + "\\s")).parent
+        print(current_chapter_tag)
+        while (current_chapter_tag.name != 'a'):
+            current_chapter_tag = current_chapter_tag.parent
+        num = chapter_num(chapter)
+        print(num)
+    return isUpdated
 
 for manga in manga_list.values():
 	scraper = Webscraper()
 	for source in manga.sources:
-		script = function_generator(manga.current_chapter[source])
+		script = function_generator(manga.current_chapter[source], manga.name)
 		target = Target(manga.sources[source], "HTTP", "GET", script)
 		scraper.add_targets(target)
 	result = scraper.scrape()
+
 
 
