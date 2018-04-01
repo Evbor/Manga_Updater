@@ -31,23 +31,22 @@ def function_generator(chapter, m_name):
             if pattern.search(chapter_name):
                 num = int(pattern.search(chapter_name).group())
                 return num
-        raise Exception("could not find the chapter number")
+        return -1 
     #function generator will return modified versions of this script which takes a requests response object
     def isUpdated(response):
         raw_html = response.text
         soup = BeautifulSoup(raw_html, "html.parser")
+        #finding current chapter tag
         current_chapter_tag = soup.find(string=regex.compile(chapter + "|\\s" + chapter + "\\s")).parent
         print(current_chapter_tag)
         while (current_chapter_tag.name != 'a'):
             current_chapter_tag = current_chapter_tag.parent
         num = chapter_num(chapter)
+        if num == -1:
+            raise Exception("could not find chapter number in: " + chapter)
         #finding a previous chapter tag
         prev_chapter_tag = None
-        for tag in soup.find_all("a"):
-            #find the string in the tag if it has one
-            #find the chapter num in the string if it has one
-            #if num > the num above then tag is a prev_chapter_tag
-        print(num)
+        #move up and down algorithm from current_chapter_tag, find all doesn't work cause there are ads for other manga chapters
     return isUpdated
 
 for manga in manga_list.values():
