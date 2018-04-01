@@ -24,7 +24,7 @@ def function_generator(chapter, m_name):
     #takes a manga chapter name and returns the chapter number as a float
     def chapter_num(chapter_name):
         cnum_signals = chapter_synonyms
-        cnum_signals.insert(0, m_name)
+        cnum_signals.insert(0, m_name) 
         for cnum_signal in cnum_signals:
             re_string = "(?<=" + cnum_signal + "[\\w]+ )\\d+|(?<=" + cnum_signal + " )\d+"
             pattern = regex.compile(re_string, regex.IGNORECASE)
@@ -41,6 +41,12 @@ def function_generator(chapter, m_name):
         while (current_chapter_tag.name != 'a'):
             current_chapter_tag = current_chapter_tag.parent
         num = chapter_num(chapter)
+        #finding a previous chapter tag
+        prev_chapter_tag = None
+        for tag in soup.find_all("a"):
+            #find the string in the tag if it has one
+            #find the chapter num in the string if it has one
+            #if num > the num above then tag is a prev_chapter_tag
         print(num)
     return isUpdated
 
