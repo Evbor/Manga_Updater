@@ -61,7 +61,7 @@ def function_generator(chapter, m_name):
             print("couldn't find previous tag")
         else:
             print(prev_tag)
-        
+        #finding the chapters container tag
     return isUpdated
 
 for manga in manga_list.values():
