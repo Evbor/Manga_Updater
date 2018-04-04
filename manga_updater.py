@@ -39,14 +39,29 @@ def function_generator(chapter, m_name):
         #finding current chapter tag
         current_chapter_tag = soup.find(string=regex.compile(chapter + "|\\s" + chapter + "\\s")).parent
         print(current_chapter_tag)
-        while (current_chapter_tag.name != 'a'):
+        while (current_chapter_tag.name != "a"):
             current_chapter_tag = current_chapter_tag.parent
         num = chapter_num(chapter)
         if num == -1:
             raise Exception("could not find chapter number in: " + chapter)
         #finding a previous chapter tag
-        prev_chapter_tag = None
-        #move up and down algorithm from current_chapter_tag, find all doesn't work cause there are ads for other manga chapters
+        prev_tag = None
+        def a_tags(taglist):
+            if current_chapter_tag in set(taglist):
+                taglist.remove(current_chapter_tag)
+            return taglist
+        container = current_chapter_tag
+        while len(a_tags(container.find_all("a"))) == 0:
+            container = container.parent
+        for tag in container.find_all("a"):
+            prev_num = num - 1
+            if tag.find(string=regex.compile(str(prev_num))) != None:
+                prev_tag = tag
+        if prev_tag == None:
+            print("couldn't find previous tag")
+        else:
+            print(prev_tag)
+        
     return isUpdated
 
 for manga in manga_list.values():
