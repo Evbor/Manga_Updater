@@ -29,7 +29,7 @@ manga_list = {madeinabyss.name: madeinabyss, AoT.name: AoT}
     
 #generates the functions that Webscraper runs on each of the response objects it gets from its sources
 def function_generator(chapter, m_name):
-    #takes a manga chapter name and returns the chapter number as a float
+    #takes a manga chapter name and returns the chapter number as a float or returns -1 if chapter number is not found
     def chapter_num(chapter_name):
         cnum_signals = chapter_synonyms
         cnum_signals.insert(0, m_name) 
@@ -63,8 +63,21 @@ def function_generator(chapter, m_name):
         container = current_chapter_tag
         while len(a_tags(container.find_all("a"))) == 0:
             container = container.parent
-        print(container)
-        
+        #checking whether a chapter has been updated or not
+        updated = False
+        updated_chapters = []
+        for chapter_tag in container.find_all("a"):
+            chapter_tag_strings = chapter_tag.stripped_strings
+            if (len(chapter_tag_strings) == 0):
+                print("chapter_a_tag does not contain any strings")
+            else:
+                for ch_string in chapter_tag_strings:
+                    ch_number = chapter_num(ch_string)
+                    if (ch_number != -1) and (ch_number > num):
+                        updated = True
+                        updated_chapters.append(chapter_tag)
+        return (updated, updated_chapters)
+                        
     return isUpdated
 
 for manga in manga_list.values():
