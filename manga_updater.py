@@ -11,10 +11,18 @@ class Manga:
 		self.current_chapter = honshou
 
 sources = {"mangakakalot": "http://mangakakalot.com/search/made_in_abyss", "mangahere": "http://www.mangahere.cc/search.php?name=made+in+abyss", "crunchyroll": "http://www.crunchyroll.com/search?from=comics&q=seven+deadly+sins"}
-MiAsrcs = {"mangakakalot": "http://mangakakalot.com/manga/made_in_abyss", "mangahere": "http://www.mangahere.cc/manga/made_in_abyss/"}
-chptrs = {"mangakakalot": "Chapter 45", "mangahere": "Made in Abyss 45"}
-madeinabyss = Manga("Made in Abyss", MiAsrcs, chptrs)
-manga_list = {madeinabyss.name: madeinabyss}
+#MiA
+MiAsrcs = {"mangakalot": "http://mangakakalot.com/manga/made_in_abyss", "mangahere": "http://www.mangahere.cc/manga/made_in_abyss/"}
+MiAchptrs = {"mangakalot": "Chapter 45", "mangahere": "Made in Abyss 45"}
+madeinabyss = Manga("Made in Abyss", MiAsrcs, MiAchptrs)
+#AoT
+AoTsrcs = {"mangakalot": "http://manganelo.com/manga/read_attack_on_titan_manga_online_free2", "mangahere": "http://www.mangahere.cc/manga/shingeki_no_kyojin/"}
+AoTchptrs = {"crunchyroll": "Ch. 103", "mangakalot": "Chapter 104", "mangahere": "Shingeki no Kyojin 104"}
+AoT = Manga("Shingeki no Kyojin", AoTsrcs, AoTchptrs)
+
+manga_list = {madeinabyss.name: madeinabyss, AoT.name: AoT}
+
+#to scrape crunchyroll find out how to scrape js websites
 
 
 
@@ -37,40 +45,35 @@ def function_generator(chapter, m_name):
         raw_html = response.text
         soup = BeautifulSoup(raw_html, "html.parser")
         #finding current chapter tag
-        current_chapter_tag = soup.find(string=regex.compile(chapter + "|\\s" + chapter + "\\s")).parent
-        print(current_chapter_tag)
+        current_chapter_tag = soup.find(string=regex.compile(chapter + "|\\s" + chapter + "\\s"))
         while (current_chapter_tag.name != "a"):
             current_chapter_tag = current_chapter_tag.parent
         num = chapter_num(chapter)
         if num == -1:
             raise Exception("could not find chapter number in: " + chapter)
-        #finding a previous chapter tag
-        prev_tag = None
+        #finding chapter list tag
         def a_tags(taglist):
+            #if they add a tags that are not chapter a tags in between chapter a tags then
+            #write algorithm to remove non chapter a tags from taglist
+            #so far they don't do this ie the a_tag closest to a chapter a tag is another chapter a tag
             if current_chapter_tag in set(taglist):
                 taglist.remove(current_chapter_tag)
             return taglist
         container = current_chapter_tag
         while len(a_tags(container.find_all("a"))) == 0:
             container = container.parent
-        for tag in container.find_all("a"):
-            prev_num = num - 1
-            if tag.find(string=regex.compile(str(prev_num))) != None:
-                prev_tag = tag
-        if prev_tag == None:
-            print("couldn't find previous tag")
-        else:
-            print(prev_tag)
-        #finding the chapters container tag
+        print(container)
+        
     return isUpdated
 
 for manga in manga_list.values():
-	scraper = Webscraper()
-	for source in manga.sources:
-		script = function_generator(manga.current_chapter[source], manga.name)
-		target = Target(manga.sources[source], "HTTP", "GET", script)
-		scraper.add_targets(target)
-	result = scraper.scrape()
+    scraper = Webscraper()
+    for source in manga.sources:
+        script = function_generator(manga.current_chapter[source], manga.name)
+        target = Target(manga.sources[source], "HTTP", "GET", script)
+        scraper.add_targets(target)
+    result = scraper.scrape()
+    scraper.remove_all_targets()
 
 
 
