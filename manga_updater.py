@@ -41,6 +41,7 @@ def function_generator(chapter, m_name):
                 return num
         return -1 
     #function generator will return modified versions of this script which takes a requests response object
+    #This function returns a boolean: True (for when a unread chapter has been released) False (otherwise)
     def isUpdated(response):
         raw_html = response.text
         soup = BeautifulSoup(raw_html, "html.parser")
