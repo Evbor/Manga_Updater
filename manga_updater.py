@@ -13,11 +13,11 @@ class Manga:
 sources = {"mangakakalot": "http://mangakakalot.com/search/made_in_abyss", "mangahere": "http://www.mangahere.cc/search.php?name=made+in+abyss", "crunchyroll": "http://www.crunchyroll.com/search?from=comics&q=seven+deadly+sins"}
 #MiA
 MiAsrcs = {"mangakalot": "http://mangakakalot.com/manga/made_in_abyss", "mangahere": "http://www.mangahere.cc/manga/made_in_abyss/"}
-MiAchptrs = {"mangakalot": "Chapter 45", "mangahere": "Made in Abyss 45"}
+MiAchptrs = {"mangakalot": "Chapter 44 : Narehate Restaurant \\[LQ\\]", "mangahere": "Made in Abyss 44"}
 madeinabyss = Manga("Made in Abyss", MiAsrcs, MiAchptrs)
 #AoT
 AoTsrcs = {"mangakalot": "http://manganelo.com/manga/read_attack_on_titan_manga_online_free2", "mangahere": "http://www.mangahere.cc/manga/shingeki_no_kyojin/"}
-AoTchptrs = {"crunchyroll": "Ch. 103", "mangakalot": "Chapter 104", "mangahere": "Shingeki no Kyojin 104"}
+AoTchptrs = {"crunchyroll": "Ch. 103", "mangakalot": "Chapter 103", "mangahere": "Shingeki no Kyojin 103"}
 AoT = Manga("Shingeki no Kyojin", AoTsrcs, AoTchptrs)
 
 manga_list = {madeinabyss.name: madeinabyss, AoT.name: AoT}
@@ -65,9 +65,9 @@ def function_generator(chapter, m_name):
             container = container.parent
         #checking whether a chapter has been updated or not
         updated = False
-        updated_chapters = []
+        updated_chapters = {}
         for chapter_tag in container.find_all("a"):
-            chapter_tag_strings = chapter_tag.stripped_strings
+            chapter_tag_strings = list(chapter_tag.stripped_strings)
             if (len(chapter_tag_strings) == 0):
                 print("chapter_a_tag does not contain any strings")
             else:
@@ -75,7 +75,7 @@ def function_generator(chapter, m_name):
                     ch_number = chapter_num(ch_string)
                     if (ch_number != -1) and (ch_number > num):
                         updated = True
-                        updated_chapters.append(chapter_tag)
+                        updated_chapters[ch_number] = chapter_tag
         return (updated, updated_chapters)
                         
     return isUpdated
@@ -88,6 +88,5 @@ for manga in manga_list.values():
         scraper.add_targets(target)
     result = scraper.scrape()
     scraper.remove_all_targets()
-
-
+    print(result)
 
