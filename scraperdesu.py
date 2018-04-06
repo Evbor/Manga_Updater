@@ -27,11 +27,11 @@ class Webscraper:
 		self.targets.clear()
 		
 	def scrape(self):
-		results = []
+		results = {}
 		for tar in self.targets:
 			if (tar.protocol == "HTTP"):
 				result = self.scrape_HTTP(tar)
-				results.append(result)
+				results[tar.address] = result
 			else:
 				print("targets protocol is not supported")
 		return results
