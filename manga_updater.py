@@ -41,7 +41,7 @@ def function_generator(chapter, m_name):
                 return num
         return -1 
     #function generator will return modified versions of this script which takes a requests response object
-    #This function returns a boolean: True (for when a unread chapter has been released) False (otherwise)
+    #This function returns: (True (for when a unread chapter has been released) or False (otherwise), the a_tag)
     def isUpdated(response):
         raw_html = response.text
         soup = BeautifulSoup(raw_html, "html.parser")
@@ -64,7 +64,6 @@ def function_generator(chapter, m_name):
         while len(a_tags(container.find_all("a"))) == 0:
             container = container.parent
         #checking whether a chapter has been updated or not
-        updated = False
         updated_chapters = {}
         for chapter_tag in container.find_all("a"):
             chapter_tag_strings = list(chapter_tag.stripped_strings)
@@ -74,9 +73,8 @@ def function_generator(chapter, m_name):
                 for ch_string in chapter_tag_strings:
                     ch_number = chapter_num(ch_string)
                     if (ch_number != -1) and (ch_number > num):
-                        updated = True
-                        updated_chapters[ch_number] = chapter_tag
-        return (updated, updated_chapters)
+                        updated_chapters[ch_number] = (str(ch_string), str(chapter_tag['href']))
+        return updated_chapters
                         
     return isUpdated
 
